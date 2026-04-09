@@ -1,0 +1,41 @@
+trigger:
+  - main
+
+pool:
+  name: MyAgentPool
+
+variables:
+  buildConfiguration: 'Release'
+  feedName: 'StringExtensionsFeed'
+
+steps:
+  - task: NuGetToolInstaller@1
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore'
+    inputs:
+      command: 'restore'
+      projects: '**/*.csproj'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build'
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
+      arguments: '--configuration $(buildConfiguration)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Pack NuGet'
+    inputs:
+      command: 'pack'
+      packagesToPack: '**/*.csproj'
+      configuration: '$(buildConfiguration)'
+      outputDir: '$(Build.ArtifactStagingDirectory)'
+
+  - task: NuGetCommand@2
+    displayName: 'Push to Azure Artifacts'
+    inputs:
+      command: 'push'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
+      nuGetFeedType: 'internal'
+      publishVstsFeed: '$(feedName)'
