@@ -38,4 +38,4 @@ steps:
       command: 'push'
       packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
       nuGetFeedType: 'internal'
-      publishVstsFeed: '$(feedName)'
+      publishVstsFeed: 'StringExtensions-Lab4/StringExtensionsFeed'
