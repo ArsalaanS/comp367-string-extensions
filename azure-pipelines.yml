@@ -39,3 +39,4 @@ steps:
       packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
       nuGetFeedType: 'internal'
       publishVstsFeed: 'StringExtensions-Lab4/StringExtensionsFeed'
+      allowPackageConflicts: true
